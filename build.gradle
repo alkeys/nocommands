@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'net.neoforged.gradle.userdev' version '7.0.142'
+}
+
+version = '1.0.0'
+group = 'com.nocommands'
+
+base {
+    archivesName = 'nocommands-1.21.5'
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+minecraft {
+    modIdentifier = 'nocommands'
+}
+
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
+
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', 'nocommands'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:21.5.+"
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'   : 'nocommands',
+            'Specification-Vendor'  : 'nocommands',
+            'Specification-Version' : '1',
+            'Implementation-Title'  : project.name,
+            'Implementation-Version': project.jar.archiveVersion,
+            'Implementation-Vendor' : 'nocommands'
+        ])
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
